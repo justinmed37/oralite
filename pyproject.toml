@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "oralite"
+version = "0.1.0"
+description = ""
+authors = ["jmad <justinmed37@gmail.com>"]
+readme = "README.md"
+packages = [{include = "src/python"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+oci = "^2.125.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
