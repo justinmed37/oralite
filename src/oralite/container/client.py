@@ -15,29 +15,30 @@ def _get_container_id(list, name):
     return id
 
 # Generic container function
-def container(func, id):
+def wrapper(func, id):
     # Execute the client function
     resp = func(id)
-    
+
     # log responses
-    logger.debug(f"RESPONSE_STATUS: {resp.status}")
-    logger.debug(f"RESPONSE_DATA: {resp.data}")
+    logger.info(f"RESPONSE_STATUS: {resp.status}")
+    logger.info(f"RESPONSE_DATA: {resp.data}")
     return resp
-
-
-# logs
-logger.debug(f"OCI_DEVOPS_INVOCATION: {sys.argv[0]}")
 
 # Initialize the container instance client
 client =  oci.container_instances.ContainerInstanceClient(config)
 
-# Simple targeting parameter for now, can provide more robust target filtering later
-container_id = ""
-if len(sys.argv) <= 1:
-    logger.error(f"INVOCATION_ERROR: Must provide container instance name")
+if __name__ == "__main__":
+    # logs
+    logger.debug(f"OCI_DEVOPS_INVOCATION: {sys.argv[0]}")
 
-# Get the container name from argv
-container_name = sys.argv[1]
 
-# Set the container ID
-container_id = _get_container_id(model['containers'][0]["items"], container_name)
+    # Simple targeting parameter for now, can provide more robust target filtering later
+    container_id = ""
+    if len(sys.argv) <= 1:
+        logger.error(f"INVOCATION_ERROR: Must provide container instance name")
+
+    # Get the container name from argv
+    container_name = sys.argv[1]
+
+    # Set the container ID
+    container_id = _get_container_id(model['containers'][0]["items"], container_name)
