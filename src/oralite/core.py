@@ -44,3 +44,13 @@ else:
 # Open our Infrastructure Model computed from our Terraform
 f = open('model.tmp.json')
 model = json.load(f)
+
+# Generic wrapper function for the clients
+def wrapper(func, id):
+    # Execute the client function
+    resp = func(id)
+
+    # log responses
+    logger.info(f"RESPONSE_STATUS: {resp.status}")
+    logger.info(f"RESPONSE_DATA: {resp.data}")
+    return resp

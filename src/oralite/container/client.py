@@ -1,44 +1,32 @@
 
 # Import code from the core module where we setup config
-from ..core import config, signer, model
+from ..core import config, signer, model, wrapper
 from ..log import logger
 import oci
 import sys
 
 
 # Get the container ID of the corresponding resource by NAME
-def _get_container_id(list, name):
+def get_container_id(list, name):
     id = ""
     for each in list:
         if each["display_name"] == name:
             id = each["id"]
     return id
 
-# Generic container function
-def wrapper(func, id):
-    # Execute the client function
-    resp = func(id)
-
-    # log responses
-    logger.info(f"RESPONSE_STATUS: {resp.status}")
-    logger.info(f"RESPONSE_DATA: {resp.data}")
-    return resp
+logger.debug(f"OCI_DEVOPS_INVOCATION: {sys.argv[0]}")
 
 # Initialize the container instance client
 client =  oci.container_instances.ContainerInstanceClient(config)
+container_id = ""
+model_containers = model['containers'][0]["items"]
 
 if __name__ == "__main__":
-    # logs
-    logger.debug(f"OCI_DEVOPS_INVOCATION: {sys.argv[0]}")
-
-
     # Simple targeting parameter for now, can provide more robust target filtering later
-    container_id = ""
     if len(sys.argv) <= 1:
         logger.error(f"INVOCATION_ERROR: Must provide container instance name")
-
+        sys.exit(10)
     # Get the container name from argv
     container_name = sys.argv[1]
-
     # Set the container ID
-    container_id = _get_container_id(model['containers'][0]["items"], container_name)
+    container_id = get_container_id(model_containers, container_name)
