@@ -7,7 +7,7 @@ import sys
 
 
 # Get the container ID of the corresponding resource by NAME
-def get_database_id(list, name):
+def get_ajd_id(list, name):
     id = ""
     for each in list:
         logger.info(f"display_names: {each['display_name']}")
@@ -18,6 +18,8 @@ def get_database_id(list, name):
 
 
 client =  oci.database.DatabaseClient(config)
+database_id = ""
+model_ajds = model['auto_dbs']
 
 if __name__ == "__main__":
     # logs
@@ -27,15 +29,15 @@ if __name__ == "__main__":
 
 
     # Simple targeting parameter for now, can provide more robust target filtering later
-    database_id = ""
+    
     if len(sys.argv) <= 1:
         logger.error(f"INVOCATION_ERROR: Must provide container instance name")
-        sys.exit(1)
+        sys.exit(10)
 
     # Get the container name from argv
     database_name = sys.argv[1]
     logger.debug(f"DATABASE_NAME: {database_name}")
     # logger.debug(f"AUTO_DBS: {model['auto_dbs']}")
     # Set the container ID
-    database_id = get_database_id(model['auto_dbs'], database_name)
+    database_id = get_ajd_id(model_ajds, database_name)
     logger.info(f"database_id: {database_id}")

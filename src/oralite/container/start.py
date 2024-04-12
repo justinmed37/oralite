@@ -8,6 +8,7 @@ client_function = client.start_container_instance
 def main(func, id):
     response = wrapper(func, id)
     print(response.data) # print output when executed from cli
+    return response
 
 if __name__ == "__main__":
     main(client_function, container_id)
